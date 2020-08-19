@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Material weather</title>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		
+	</head>
+	<body>
+		<header>
+			<h1>
+				SIMPLE WEATHER
+			</h1>
+		</header>
+
+		<div class="page">
+			<div class="search">
+					<form autocomplete="off">
+						<div class="form">
+							<input class="searchbar" type="text" name="city" placeholder="inserisci la città, stato" id="inputbar">
+							<button class="button"  id="search" type="submit" onclick="sub(event)">
+								<div class="isearch"></div>
+							</button>
+							<button class="button" id="geo" type="submit" onclick="subPosition(event)">
+								<div class="igeo"></div>
+							</button>
+						</div>
+					</form>
+				</div>
+			<div class="content">
+				<div class="cityName">
+				</div>
+				<div class="weather">
+					<div class="infowrapper">
+						<div class="info">
+							<div class="element" id="date">
+							</div>
+							<div class="element" id="type">
+							</div>
+						</div>
+						<div class="wrapper">
+							<div class="icon">
+							</div>
+							<div class="temperature">
+								<div class="degrees">
+								</div>
+								<div class="unit">
+									<div class="u active" id = "cel">
+										<p>°C</p>
+									</div>
+									<div class="u" id = "far">
+										<p>°F</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="winhum">
+						<div class="element" id="wind">
+							<p>vento: </p>
+						</div>
+						<div class="element" id="humidity">
+							<p>Umidità: </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+			
+		</footer>
+		<script type="text/javascript" src="script/weather.js"></script>
+	</body>
+</html>
