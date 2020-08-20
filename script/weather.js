@@ -2,7 +2,7 @@ const apiRoot = 'http://api.openweathermap.org/data/2.5/weather?';
 const apiKey = '6c31df7f2be80e4fd4ae23674939e835';
 const now = new Date();
 const body = document.querySelector('body');
-const cityName = document.querySelector('.cityName'); //dichiaro tutti gli elementi della pagina HTML
+const cityName = document.querySelector('.cityName');
 const date = document.querySelector('#date');
 const type = document.querySelector('#type');
 const icon = document.querySelector('.icon');
@@ -19,7 +19,7 @@ const imported = document.querySelectorAll('p.imported');
 let apiCall = 'http://api.openweathermap.org/data/2.5/weather?q='  + '&appid=' + apiKey;
 
 
-function dateParser(num){ //da numero a giorno della settimana in lettere
+function dateParser(num){ //converte da numero a giorno della settimana in lettere
 	switch(num){
 		case 0:
 			return 'Domenica';
@@ -73,7 +73,7 @@ function weatherTrans(condition){  //traduce condizione meteo in italiano
 	}
 }
 
-function kelvinTo(x, value){ //converte kelvin - celsius || kelvin - farenheit
+function kelvinTo(x, value){ //ritorna conversione kelvin - celsius || kelvin - farenheit
 	switch(x){
 		case 'c':
 			return (Math.round((value - 273.15)*10)/10);
@@ -93,33 +93,44 @@ function addP(element, classP, contentP){ //aggiunge <p class = "nomeclasse"> fi
 	element.appendChild(p);
 }
 
-function createDiv(classP){
+function removePara(){ //rimuove tutti gli elementi importati nella pagina
+	let p = document.querySelectorAll('.imported');
+	console.log(p);
+
+	for(let i = 0; i < p.length; i++){
+
+		p[i].parentNode.removeChild(p[i]);
+	}
+
+}
+
+function createDiv(classP){	//ritorna <div class = "nomeclasse">
 	let div = document.createElement('div');
 	div.setAttribute('class',classP);
 	return div;
 }
 
-function getName(cityJ, countryJ){ 
+function getName(cityJ, countryJ){ //aggiunge nome città alla pagina
 	let para = cityJ + ', ' + countryJ;
 	addP(cityName, 'imported title', para);
 }
 
-function getDate(){
+function getDate(){ //aggiunge data e ora alla pagina
 	let day = dateParser(now.getDay());
 	let time = now.getHours() + ':' + ('0' + now.getMinutes()).slice(-2);
 	let para = day + ', ' + time;
 	addP(date, 'imported', para);
 }
 
-function getCondition(conditionJ){
+function getCondition(conditionJ){  //aggiunge condizione meteo alla pagina
 	let condition = weatherTrans(conditionJ);
 	addP(type, 'imported', condition)
 }
 
-function getDegrees(degreesJ){
+function getDegrees(degreesJ){ //aggiunge temperatura alla pagina
 
 	let value = degreesJ
-	unitC.onclick = function(){
+	unitC.onclick = function(){ //bottone celsius
 		let p = document.querySelector('.conv');
 		unitC.setAttribute('class', 'u active');
 		unitF.setAttribute('class', 'u');
@@ -130,7 +141,7 @@ function getDegrees(degreesJ){
 		value = degreesJ;
 	}
 
-	unitF.onclick = function(){
+	unitF.onclick = function(){ //bottone farenheit
 		let p = document.querySelector('.conv');
 		unitC.setAttribute('class', 'u');
 		unitF.setAttribute('class', 'u active');
@@ -143,17 +154,17 @@ function getDegrees(degreesJ){
 	addP(degrees, 'imported conv', kelvinTo('c', value));
 }
 
-function getWind(windJ){
+function getWind(windJ){ //aggiunge velocità del vento alla pagina
 	let speed = windJ + ' m/s';
 	addP(wind, 'imported', speed);
 }
 
-function getHumidity(humidityJ){
+function getHumidity(humidityJ){ //aggiunge percentuale umdità alla pagina 
 	let perc = humidityJ + '%';
 	addP(humidity, 'imported', perc);
 }
 
-function getIcon(iconJ){
+function getIcon(iconJ){  //aggiunge icona alla pagina
 	let id = iconJ.slice(0,2);
 	let div = document.createElement('div');
 	let raining = document.createElement('div');
@@ -164,7 +175,8 @@ function getIcon(iconJ){
 	thunder.setAttribute('class', 'imported thunder');
 	let fragment = document.createDocumentFragment();
 	let fragment1 = document.createDocumentFragment();
-	switch(id){
+	switch(id){ /*in base all'id icona fornito dalla apicall aggiunge
+				  gli elementi necessari per mostrare l'icona*/
 		case '01':
 			fragment.appendChild(createDiv('imported sun'));
 			icon.appendChild(fragment);
@@ -227,17 +239,6 @@ function getIcon(iconJ){
 	}
 }
 
-function removePara(){
-	let p = document.querySelectorAll('.imported');
-	console.log(p);
-
-	for(let i = 0; i < p.length; i++){
-
-		p[i].parentNode.removeChild(p[i]);
-	}
-
-}
-
 
 async function getApi(link){ //funzione asincrona per la richiesta del JSON
 	let response;
@@ -250,7 +251,7 @@ async function getApi(link){ //funzione asincrona per la richiesta del JSON
 	return response.json();
 }
 
-async function populatePage(apiCall){
+async function populatePage(apiCall){ //funzione asincrona per l'inserimento di tutti gli elementi
 	let api;
 	api = await getApi(apiCall);
 	console.log(api);
@@ -279,14 +280,14 @@ function subPosition(event){
 	event.preventDefault();
 }
 
-function getPosition(position){
+function getPosition(position){ //api call geolocation
 	removePara();
 	console.log(position);
 	let apiCall = apiRoot + 'lat=' + position.coords.latitude + '&lon=' + position.coords.longitude + '&appid=' + apiKey;
 	populatePage(apiCall);
 }
 
-function sub(event){
+function sub(event){ //apicall barra di ricerca
 	removePara();
 	let x = document.getElementById('inputbar').value;
 	console.log(x);
@@ -296,7 +297,7 @@ function sub(event){
 	event.preventDefault();
 }
 
-function defaultPage(){
+function defaultPage(){ //pagina di default da mostrare
 	let apiCall = apiRoot + 'q=New York' + '&appid=' + apiKey;
 	populatePage(apiCall);
 
